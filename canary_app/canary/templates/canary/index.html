@@ -1,0 +1,22 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>canary</title>
+</head>
+<body>
+    <form class="start-stream" action="{% url 'canary:start_stream' %}" method="post">
+
+        {% csrf_token %}
+        <input type='text' name="search" value='' placeholder="Search">
+        <button type='submit'>Start</button>
+    </form>
+    <form class="start-stream" action="{% url 'canary:stop_stream' %}">
+        <button type='submit'>Stop</button>
+    </form>
+    
+{% block content %}
+{% endblock %}
+
+</body>
+</html>

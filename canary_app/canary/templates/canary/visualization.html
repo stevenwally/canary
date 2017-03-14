@@ -1,0 +1,14 @@
+{% extends 'canary/index.html' %}
+
+{% block content %}
+
+    <div id='visualization' action="{% url 'canary:visualization' %}" method='get'> 
+        <div id='positive'>
+            {% for tweet in tweets %}
+            <p>{{tweet.tweet_text}}</p>
+            {% endfor %}
+        </div>
+
+    </div>
+
+{% endblock %}
