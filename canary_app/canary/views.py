@@ -36,18 +36,27 @@ def stop_stream(request):
 
     return HttpResponseRedirect('/')
 
-
-
 def visualization(request):
-    tweets = dict()
 
     template_name = 'canary/visualization.html'
 
     sentiment = {'positive': handler.positive, 'negative': handler.negative, 'neutral': handler.neutral}
 
-    tweets = handler.get_data()
+    sentiment = handler.get_data()
 
-    context = {'tweets': tweets}
+    context = {'sentiment': sentiment}
+
+    return render(request, template_name, context)
+
+def update(request):
+
+    template_name = 'canary/visualization.html'
+
+    sentiment = {'positive': handler.positive, 'negative': handler.negative, 'neutral': handler.neutral}
+
+    sentiment = handler.get_data()
+
+    context = {'sentiment': sentiment}
 
     return render(request, template_name, context)
 

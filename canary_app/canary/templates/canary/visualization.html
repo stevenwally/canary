@@ -1,14 +1,22 @@
 {% extends 'canary/index.html' %}
 
 {% block content %}
+{% load static %}
 
     <div id='visualization' action="{% url 'canary:visualization' %}" method='get'> 
         <div id='positive'>
-            {% for tweet in tweets %}
-            <p>{{tweet.tweet_text}}</p>
-            {% endfor %}
+            <p>{{sentiment.positive}}</p>
+            <p>{{sentiment.negative}}</p>
+            <p>{{sentiment.neutral}}</p>
         </div>
 
     </div>
+
+    <script src="{% static 'js/script.js' %}"></script>
+<!--     <script>
+    setInterval( () => {
+        console.log('reload');
+        location.reload();
+    }, 5000);</script> -->
 
 {% endblock %}

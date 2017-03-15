@@ -35,6 +35,7 @@ class Processor(object):
             )
 
         handler.set_sentiment(search_keyword)
+        
  
 
     def process_tweets(self, tweet):

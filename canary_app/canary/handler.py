@@ -25,7 +25,7 @@ class Handler(object):
 
     def get_data(self):
 
-        return Tweet.objects.all()
+        return {'positive': self.positive, 'negative': self.negative, 'neutral': self.neutral}
 
 
 

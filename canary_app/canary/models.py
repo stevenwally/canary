@@ -4,7 +4,6 @@ class UserKeyword(models.Model):
     keyword_name = models.CharField(max_length=50, null=True, unique=True)
 
 
-
 class Tweet(models.Model):
     """
         Contains pertinent data to tweets streamed from the Twitter API.
