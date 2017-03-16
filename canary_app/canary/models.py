@@ -1,7 +1,7 @@
 from django.db import models
 
 class UserKeyword(models.Model):
-    keyword_name = models.CharField(max_length=50, null=True, unique=True)
+    keyword_name = models.CharField(max_length=50, null=True)
 
 
 class Tweet(models.Model):

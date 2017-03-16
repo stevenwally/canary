@@ -9,6 +9,5 @@ urlpatterns = [
     url(r'^start_stream/', start_stream, name='start_stream'),
     url(r'^stop_stream/', stop_stream, name='stop_stream'),
     url(r'^visualization/', visualization, name='visualization'),
-    url(r'^update/', update, name='update'),
-
+    url(r'^results/', results, name='results'),
 ]

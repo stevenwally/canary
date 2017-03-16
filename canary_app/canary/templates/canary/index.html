@@ -4,9 +4,15 @@
 <html>
 <head>
     <title>canary</title>
+    <link href="https://afeld.github.io/emoji-css/emoji.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
 </head>
 <body>
+    <div id='data-wrapper'>
+
+    {% block content %}
+    {% endblock %}
+    </div>
 
     <div id='controls'>
         <form id="start-stream" action="{% url 'canary:start_stream' %}" method="post">
@@ -16,14 +22,11 @@
         </form>
 
         <form id="stop-stream" action="{% url 'canary:stop_stream' %}">
-            <button type="submit">Stop</button>
+            <button id="stop" type="submit">Stop</button>
         </form>
     </div>
     
-{% block content %}
-{% endblock %}
-
-
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
 
 </body>
 </html>
