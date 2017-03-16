@@ -15,7 +15,6 @@ class Processor(object):
         self.coords = int()
         self.polarity = 0
 
-
     def persist_keyword(self, search_keyword):
 
         Processor.search_keyword = search_keyword
@@ -31,11 +30,7 @@ class Processor(object):
                 tweet_text = text,
                 sent_rating = polarity,
                 search_keyword = search_keyword
-
             )
-
-        handler.set_sentiment(search_keyword)
- 
 
     def process_tweets(self, tweet):
 
@@ -54,5 +49,6 @@ class Processor(object):
         # subjectivity = sent.subjectivity
 
     # process sentiment based on polarity
-        # Processor.process_sentiment(self)
+        handler.set_sentiment(self.polarity)
+        handler.set_tweet(self.tweet_text, self.polarity)
         Processor.persist_tweet(self.tweet_text, self.polarity)

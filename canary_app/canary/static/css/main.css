@@ -1,0 +1,89 @@
+body {
+    background-color: #E5E8EB;
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 10px;
+}
+
+p {
+    font-size: 2em;
+    font-weight: 300;
+}
+
+/* CONTROLS */
+
+#controls {
+    width: 25%;
+    margin: 0 auto;
+}
+
+input {
+    width: 100%;
+    font-size: 2em;
+    margin: 0 auto;
+    display: block;
+    text-align: center;
+}
+
+button {
+    width: 100%;
+    margin: 0 auto;
+    font-size: 1.5em;
+    font-weight: 200;
+}
+
+/* VISUALIZATION */
+
+.emoji {
+    font-size: 3em;
+}
+
+#data-wrapper {
+    border: 1px solid #363A38;
+    background-color: #D3D3D3;
+    height: 70vh;
+    margin: 4em auto;
+    padding-bottom 1em;
+}
+
+#visualization {
+    width: 100%;
+    margin: 0 auto
+}
+
+.sent-card {
+    display: inline-block;
+    margin: 0 auto;
+    height: 65vh;
+    width: 33.18%;
+    text-align: center;
+}
+
+.tweet-box {
+    background-color: #C5C5C5;
+    border: 1px solid #1A301D;
+    width: 90%;
+    height: 35vh;
+    margin: 0 auto;
+    overflow: scroll;
+}
+
+h6 {
+    font-size: 1.5em;
+    font-weight: 300;
+    margin: 1em auto;
+}
+
+#positive {
+    background-color: #9DC6A5;
+    color: #202020;
+}
+
+#neutral {
+    background-color: #AEADAB;
+    color: #202020;
+}
+
+#negative {
+    background-color: #B79794;
+    color: #202020;
+}

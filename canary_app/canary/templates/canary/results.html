@@ -1,7 +1,7 @@
 {% extends 'canary/index.html' %}
 
-{% load static %}
 {% block content %}
+{% load static %}
 
         <div id='visualization' action="{% url 'canary:visualization' %}" method='get'> 
 
@@ -36,8 +36,5 @@
             </div>
 
         </div>
-
-
-<script src="{% static 'js/refresh.js' %}"></script>
 
 {% endblock %}

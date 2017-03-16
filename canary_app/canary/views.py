@@ -26,6 +26,7 @@ def start_stream(request):
 
     processor = Processor()
     processor.persist_keyword(search['search'])
+    handler.clear_handler()
     stream.filter(track=[search['search']], async=True)
 
     return HttpResponseRedirect('/visualization')
@@ -34,20 +35,36 @@ def stop_stream(request):
 
     stream.disconnect()
 
-    return HttpResponseRedirect('/')
-
-
+    return HttpResponseRedirect('/results')
 
 def visualization(request):
-    tweets = dict()
 
     template_name = 'canary/visualization.html'
 
     sentiment = {'positive': handler.positive, 'negative': handler.negative, 'neutral': handler.neutral}
 
-    tweets = handler.get_data()
+    sentiment = handler.get_data()
 
-    context = {'tweets': tweets}
+    context = {'sentiment': sentiment}
+
+    return render(request, template_name, context)
+
+def results(request):
+
+    template_name = 'canary/results.html'
+
+    sentiment = {
+                'positive': handler.positive, 
+                'negative': handler.negative, 
+                'neutral': handler.neutral,
+                'positive_tweets': handler.positive_tweets,
+                'negative_tweets': handler.negative_tweets,
+                'positive_tweets': handler.neutral_tweets
+                }
+
+    sentiment = handler.get_data()
+
+    context = {'sentiment': sentiment}
 
     return render(request, template_name, context)
 

@@ -7,25 +7,55 @@ class Handler(object):
         self.positive = 0
         self.negative = 0
         self.neutral = 0
+        self.positive_tweets = []
+        self.negative_tweets = []
+        self.neutral_tweets = []
+        self.location = []
 
-    def set_sentiment(self, keyword):
 
-        search_keyword = UserKeyword.objects.filter(keyword_name = keyword.keyword_name)
+    def clear_handler(self):
+        self.positive = 0
+        self.negative = 0
+        self.neutral = 0
+        self.positive_tweets = []
+        self.negative_tweets = []
+        self.neutral_tweets = []
 
-        current_tweets = Tweet.objects.filter(search_keyword_id = keyword.pk)
+    def set_tweet(self, text, polarity):
 
-        for tweet in current_tweets:
+        if polarity > 0:
+            self.positive_tweets.append(text)
+        elif polarity < 0:
+            self.negative_tweets.append(text)
+        else:
+            self.neutral_tweets.append(text)
 
-            if tweet.sent_rating > 0:
-                self.positive += 1
-            elif tweet.sent_rating < 0:
-                self.negative += 1
-            else:
-                self.neutral += 1
+
+    def set_sentiment(self, polarity):
+
+        # search_keyword = UserKeyword.objects.filter(keyword_name = keyword.keyword_name)
+
+        # current_tweets = Tweet.objects.filter(search_keyword_id = keyword.pk)
+
+        # for tweet in current_tweets:
+
+        if polarity > 0:
+            self.positive += 1
+        elif polarity < 0:
+            self.negative += 1
+        else:
+            self.neutral += 1
 
     def get_data(self):
 
-        return Tweet.objects.all()
+        return {'positive': self.positive,
+                'negative': self.negative, 
+                'neutral': self.neutral,
+                'positive_tweets': self.positive_tweets,
+                'negative_tweets': self.negative_tweets,
+                'neutral_tweets': self.neutral_tweets
+                }
+
 
 
 
