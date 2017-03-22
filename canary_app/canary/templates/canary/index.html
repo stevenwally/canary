@@ -4,29 +4,58 @@
 <html>
 <head>
     <title>canary</title>
+    <!-- EMOJI CSS -->
     <link href="https://afeld.github.io/emoji-css/emoji.css" rel="stylesheet">
+    <!-- GOOGLE CHART SCRIPT -->
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/css/materialize.min.css">
+    <!-- LOCAL CSS -->
     <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
 </head>
 <body>
-    <div id='data-wrapper'>
+    <div class='container'>
 
+        <div id='controls' class='row'>
+            <form action="{% url 'canary:start_stream' %}" method="post">
+                {% csrf_token %}
+
+                <div class='col s5'>
+                    <input id='search-field' type="text" name="search" placeholder="Search">
+                </div>
+
+                <div id='start-stream' class='col s1'>
+                    <button id="start" class='btn waves-effect waves-light btn-large grey-text text-darken-2 grey lighten-2' type="submit">Start Stream</button>
+                </div>
+
+            </form>
+            <form action="{% url 'canary:stop_stream' %}" >
+
+                <div id="stop-stream" class='col s1'>
+                    <button id="stop" class='btn waves-effect waves-light btn-large grey-text text-darken-2 #b3e5fc grey lighten-2
+    ' type="submit">Stop Stream</button>
+                </div>
+            </form>
+        </div>
+        <div class='row'>
+            <div class='center-align'>
+                <img id='twitter-logo' src="{% static 'img/Twitter_Logo_Blue.png' %}">
+                <span class='powered'>Powered by the Twitter Streaming API</span>
+            </div>
+        </div>
+
+    <div id='data-wrapper' class='z-depth-2'>
     {% block content %}
+        <div id='visualization'>
+            <h1>...</h1>
+        </div>
     {% endblock %}
     </div>
 
-    <div id='controls'>
-        <form id="start-stream" action="{% url 'canary:start_stream' %}" method="post">
-            {% csrf_token %}
-            <input type="text" name="search" placeholder="Search">
-            <button id="start" type="submit">Start</button>
-        </form>
-
-        <form id="stop-stream" action="{% url 'canary:stop_stream' %}">
-            <button id="stop" type="submit">Stop</button>
-        </form>
     </div>
-    
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
+<!-- Compiled and minified JavaScript -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/js/materialize.min.js"></script>
 
 </body>
 </html>

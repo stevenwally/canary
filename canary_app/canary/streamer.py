@@ -7,7 +7,7 @@ processor = Processor()
 class Listener(StreamListener):
 
     def on_status(self, status):
-        # Getting tweets & excluding retweets
+        # Get tweets -> exclude retweets
         if 'RT @' in status.text:
             return
         else:
@@ -18,4 +18,4 @@ class Listener(StreamListener):
         # Error handling
         if status_code == 420:
             print('Error: Status Code 420')
-            return False
+            return True

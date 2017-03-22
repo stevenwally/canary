@@ -1,15 +1,19 @@
-{% extends 'canary/index.html' %}
+{% extends 'canary/visualization.html' %}
 
-{% block content %}
 {% load static %}
 
-  <div id='visualization' action="{% url 'canary:visualization' %}" method='get'>
+{% block content %}
+<div id='data-wrapper' class='z-depth-2'>
+  <div id='search-keyword'>
+    <h1>{{positive.keyword}}</h1>
+  </div>
+</div>
+<script src="{% static 'js/refresh.js' %}"></script>
+{% endblock %}
+<!--   <div id='visualization' action="{% url 'canary:visualization' %}" method='get'>
     <div class='row'>
-      <div id='search-keyword' class='left-align'>
-        <h1>Results for <i>'{{positive.keyword}}'</i></h1>
-      </div>
-    </div>
-    <div class='row'>
+    </div> -->
+<!--     <div class='row'>
       <div id='donut' class='col s6 left-align'>
           <script type="text/javascript">
             google.charts.load("current", {packages:["corechart"]});
@@ -41,57 +45,43 @@
           </script>
 
           <div id="piechart" style="width: 400px; height: 400px;"></div>
-      </div>
+      </div> -->
 
-      <div id='positive' class='col s4'>
-          <div class='left-align tweet-overview'>
-            <span><b>{{positive.sentiment}}</b> positive tweets</span>
-          </div>
-          <div class='right-align tweet-origin'>
-            <span>Origin</span>
-          </div>
-        <div id='positive-locations' class='right-align'>
+      <!-- <div class='row'>
+        <div id='positive' class='col s4 right-align'>
+           <i class="emoji em em-blush"></i>
+          <p>{{positive.sentiment}} positive tweets</p>
           {% for loc in positive.location %}
           {% if loc != "Unknown Location" %}
-          <h6 class='location'>{{loc}}</h6>
+          <h6>{{loc}}</h6>
           {% endif %}
           {% endfor %}
-        </div>
-      </div>
+        </div> -->
+      <!-- </div> -->
 
-      <div id='neutral' class='col s4'>
-        <div class='left-align tweet-overview'>
-          <span><b>{{neutral.sentiment}}</b> neutral tweets</span>
-        </div>
-        <div class='right-align tweet-origin'>
-          <span>Origin</span>
-        </div>
-        <div id='neutral-locations' class='right-align'>
+      <!-- <div class='row'> -->
+        <!-- <div id='neutral' class='col s4 right-align'> -->
+          <!-- <i class="emoji em em-neutral_face"></i> -->
+<!--           <p>{{neutral.sentiment}} neutral tweets</p>
           {% for loc in neutral.location %}
           {% if loc != "Unknown Location" %}
-          <h6 class='location'>{{loc}}</h6>
+          <h6>{{loc}}</h6>
           {% endif %}
-          {% endfor %}
-        </div>
-      </div>
+          {% endfor %} -->
+        <!-- </div> -->
+      <!-- </div> -->
 
-      <div id='negative' class='col s4'>
-        <div class='left-align tweet-overview'>
-          <span><b>{{negative.sentiment}}</b> negative tweets</span>
-        </div>
-        <div class='right-align tweet-origin'>
-          <span>Origin</span>
-        </div>
-        <div id='negative-locations' class='right-align'>
+      <!-- <div class='row'> -->
+        <!-- <div id='negative' class='col s4 right-align'> -->
+          <!-- <i class="emoji em em-angry"></i> -->
+<!--           <p>{{negative.sentiment}} negative tweets</p>
           {% for loc in negative.location %}
           {% if loc != "Unknown Location" %}
-          <h6 class='location'>{{loc}}</h6>
+          <h6>{{loc}}</h6>
           {% endif %}
           {% endfor %}
-        </div>
-      </div>
+        </div> -->
+      <!-- </div> -->
 
-    </div>
-  </div>
-
-{% endblock %}
+<!--     </div>
+  </div> -->
