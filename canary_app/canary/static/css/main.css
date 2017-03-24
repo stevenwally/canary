@@ -38,7 +38,7 @@ h1#main-header {
 /* CONTROLS */
 
 #search-field:focus {
-    border-bottom: 1px solid #3E3E3E;
+    border-bottom: 1px solid #1D226F;
     -webkit-box-shadow: 0 1px 0 0 #3E3E3E;
     -moz-box-shadow: 0 1px 0 0 #3E3E3E;
     box-shadow: 0 0 0 0 #3E3E3E;
@@ -47,6 +47,7 @@ h1#main-header {
 input#search-field {
     font-size: 3em;
     font-weight: 200;
+    color: #1D226F;
 }
 
 button#start,

@@ -23,12 +23,10 @@
                         <h1 id='main-header'>CANARY</h1>
                     </div>
                 </div>
-
                 <form action="{% url 'canary:start_stream' %}" method="post">
                     {% csrf_token %}
                     <div class='row'>
                         <div class='center-align'>
-                            <!-- <div class='col s12 m4 l8'> -->
                                 <input id='landing-search-field' type="text" name="search" placeholder="enter a topic">
                         </div>
                     </div>
