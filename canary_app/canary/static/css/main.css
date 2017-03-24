@@ -2,37 +2,43 @@ html {
     background-color: #F2F2F2;
     font-size: 10px;
     font-weight: 200;
+    font-family:;
 }
 
+
 h1, h2, h3, h4, h5, h6, p {
-    font-weight: 300;
+    font-weight: 200;
 }
 
 text {
     font-weight: 200;
 }
 
-.main-header {
+h1#main-header {
+    letter-spacing: 0.35em;
     font-size: 6.5em;
-    margin: 0 auto;
-    font-weight: 300;
-    color: #444444;
+    font-weight: 200;
+    color: #1D226F;
 }
 
 #search-wrap {
     position: relative;
-    top: 300px;
+    top: 215px;
+    border: 8px double #EAEBBC;
+    width: 60%;
+    padding: 18em 0;
+    margin: 0 auto;
 }
 
 #vis-wrap {
     position: relative;
-    top: 50px;
+    top: 100px;
 }
 
 /* CONTROLS */
 
 #search-field:focus {
-    border-bottom: 1px solid #3E3E3E;
+    border-bottom: 1px solid #1D226F;
     -webkit-box-shadow: 0 1px 0 0 #3E3E3E;
     -moz-box-shadow: 0 1px 0 0 #3E3E3E;
     box-shadow: 0 0 0 0 #3E3E3E;
@@ -41,6 +47,7 @@ text {
 input#search-field {
     font-size: 3em;
     font-weight: 200;
+    color: #1D226F;
 }
 
 button#start,
