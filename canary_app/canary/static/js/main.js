@@ -1,27 +1,16 @@
-var streaming = false;
-var start = document.getElementById('start-button')
-var stop = document.getElementById('stop-button')
-
-
-start.addEventListener('click', function() {
-    streaming = true;
-    if (streaming === true) {
-        $(start).toggleClass('hidden');
-        $(stop).toggleClass('hidden');
+$(all_sentiment).each( function(i) {
+    console.log(all_sentiment[i]);
+    if (all_sentiment[i] === 0) {
+        $('#loader').show();
+        $('#donut').hide();
+        $('#positive').hide();
+        $('#neutral').hide();
+        $('#negative').hide();
     } else {
-        $(start).toggleClass('hidden');
-        $(stop).toggleClass('hidden');
-    };
+        $('#loader').hide();
+        $('#donut').show();
+        $('#positive').show();
+        $('#neutral').show();
+        $('#negative').show();
+    }
 });
-
-stop.addEventListener('click', function() {
-    streaming = false;
-    if (streaming === true) {
-        $(start).toggleClass('hidden');
-        $(stop).toggleClass('hidden');
-    } else {
-        $(start).toggleClass('hidden');
-        $(stop).toggleClass('hidden');
-    };
-});
-

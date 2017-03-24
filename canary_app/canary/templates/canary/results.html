@@ -2,96 +2,129 @@
 
 {% block content %}
 {% load static %}
-
-  <div id='visualization' action="{% url 'canary:visualization' %}" method='get'>
-    <div class='row'>
-      <div id='search-keyword' class='left-align'>
-        <h1>Results for <i>'{{positive.keyword}}'</i></h1>
-      </div>
-    </div>
-    <div class='row'>
-      <div id='donut' class='col s6 left-align'>
-          <script type="text/javascript">
-            google.charts.load("current", {packages:["corechart"]});
-            google.charts.setOnLoadCallback(drawChart);
-            function drawChart() {
-              var data = google.visualization.arrayToDataTable([
-                ['Sentiment', 'Count'],
-                ['Positive',     {{positive.sentiment}}],
-                ['Neutral',  {{neutral.sentiment}}],
-                ['Negative',      {{negative.sentiment}}]
-              ]);
-
-              var options = {
-                title: 'Tweet Sentiment',
-                'fontWeight': '200',
-                backgroundColor: 'transparent',
-                is3D: 'true',
-                fontSize: '16',
-                fontName: 'Helvetica',
-                fontWeight: '200',
-                chartArea: {'width': '80%', 'height': '80%'},
-                legend: {'position': 'bottom'},
-                colors: ['#5F7992', '#779266', '#923837']
-              };
-
-              var chart = new google.visualization.PieChart(document.getElementById('piechart'));
-              chart.draw(data, options);
-            }
-          </script>
-
-          <div id="piechart" style="width: 400px; height: 400px;"></div>
+<div id='vis-wrap'>
+<!-- CONTROLS -->
+  <form action="{% url 'canary:start_stream' %}" method="post">
+      {% csrf_token %}
+      <div class='row'>
+          <div class='center-align'>
+            <input id='landing-search-field' type="text" name="search" placeholder="New Search">
+          </div>
       </div>
 
-      <div id='positive' class='col s4'>
+      <div class='row'>
+          <div id='start-stream' class='center-align'>
+            <button id="start" class='btn waves-effect waves-light grey-text text-darken-2 grey lighten-2' type="submit">Go</button>
+          </div>
+      </div>
+  </form>
+
+  <!-- DATA VIS -->
+
+  <div id='data-wrapper' class='z-depth-2'>
+
+    <div id='visualization' action="{% url 'canary:visualization' %}" method='get'>
+      <div class='row'>
+        <div id='search-keyword' class='left-align'>
+          <h1>Results for <i>'{{positive.keyword}}'</i></h1>
+        </div>
+      </div>
+
+      <div class='row'>
+        <div id='donut' class='col s6 left-align'>
+            <script type="text/javascript">
+              google.charts.load("current", {packages:["corechart"]});
+              google.charts.setOnLoadCallback(drawChart);
+              function drawChart() {
+                var data = google.visualization.arrayToDataTable([
+                  ['Sentiment', 'Count'],
+                  ['Positive',     {{positive.sentiment}}],
+                  ['Neutral',  {{neutral.sentiment}}],
+                  ['Negative',      {{negative.sentiment}}]
+                ]);
+
+                var options = {
+                  title: 'Tweet Sentiment',
+                  'fontWeight': '200',
+                  backgroundColor: 'transparent',
+                  is3D: 'true',
+                  fontSize: '16',
+                  fontName: 'Helvetica',
+                  fontWeight: '200',
+                  chartArea: {'width': '80%', 'height': '80%'},
+                  legend: {'position': 'bottom'},
+                  circle: {'width': '500px'},
+                  colors: ['#5DCF72', '#D0D16E', '#D17571']
+                  /////// positive //// neutral // negative
+                };
+
+                var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+                chart.draw(data, options);
+              }
+
+            </script>
+
+            <div id="piechart" style="width: 400px; height: 400px;"></div>
+        </div>
+
+        <div id='positive' class='col s4 z-depth-2'>
+            <div class='left-align tweet-overview'>
+              <span class='tweet-data'><b>{{positive.sentiment}}</b> positive tweets</span>
+            </div>
+            <div class='right-align tweet-origin'>
+              <span class='tweet-data'>Origin</span>
+            </div>
+          <div id='positive-locations' class='right-align'>
+            {% for loc in positive.location %}
+            {% if loc != "Unknown Location" %}
+            <h6 class='tweet-data location'>{{loc}}</h6>
+            {% endif %}
+            {% endfor %}
+          </div>
+        </div>
+
+        <div id='neutral' class='col s4 z-depth-2'>
           <div class='left-align tweet-overview'>
-            <span><b>{{positive.sentiment}}</b> positive tweets</span>
+            <span class='tweet-data'><b>{{neutral.sentiment}}</b> neutral tweets</span>
           </div>
           <div class='right-align tweet-origin'>
-            <span>Origin</span>
+            <span class='tweet-data'>Origin</span>
           </div>
-        <div id='positive-locations' class='right-align'>
-          {% for loc in positive.location %}
-          {% if loc != "Unknown Location" %}
-          <h6 class='location'>{{loc}}</h6>
-          {% endif %}
-          {% endfor %}
+          <div id='neutral-locations' class='right-align'>
+            {% for loc in neutral.location %}
+            {% if loc != "Unknown Location" %}
+            <h6 class='tweet-data location'>{{loc}}</h6>
+            {% endif %}
+            {% endfor %}
+          </div>
         </div>
-      </div>
 
-      <div id='neutral' class='col s4'>
-        <div class='left-align tweet-overview'>
-          <span><b>{{neutral.sentiment}}</b> neutral tweets</span>
+        <div id='negative' class='col s4 z-depth-2'>
+          <div class='left-align tweet-overview'>
+            <span class='tweet-data'><b>{{negative.sentiment}}</b> negative tweets</span>
+          </div>
+          <div class='right-align tweet-origin'>
+            <span class='tweet-data'>Origin</span>
+          </div>
+          <div id='negative-locations' class='tweet-data right-align'>
+            {% for loc in negative.location %}
+            {% if loc != "Unknown Location" %}
+            <h6 class='tweet-data location'>{{loc}}</h6>
+            {% endif %}
+            {% endfor %}
+          </div>
         </div>
-        <div class='right-align tweet-origin'>
-          <span>Origin</span>
-        </div>
-        <div id='neutral-locations' class='right-align'>
-          {% for loc in neutral.location %}
-          {% if loc != "Unknown Location" %}
-          <h6 class='location'>{{loc}}</h6>
-          {% endif %}
-          {% endfor %}
-        </div>
-      </div>
 
-      <div id='negative' class='col s4'>
-        <div class='left-align tweet-overview'>
-          <span><b>{{negative.sentiment}}</b> negative tweets</span>
-        </div>
-        <div class='right-align tweet-origin'>
-          <span>Origin</span>
-        </div>
-        <div id='negative-locations' class='right-align'>
-          {% for loc in negative.location %}
-          {% if loc != "Unknown Location" %}
-          <h6 class='location'>{{loc}}</h6>
-          {% endif %}
-          {% endfor %}
-        </div>
       </div>
-
     </div>
   </div>
 
+  <div id='twitter-results' class='row'>
+    <div class='center-align'>
+        <img id='twitter-logo' src="{% static 'img/Twitter_Logo_Blue.png' %}">
+        <span class='powered'>Powered by the Twitter Streaming API</span>
+    </div>
+  </div>
+
+</div>
 {% endblock %}
