@@ -27,7 +27,6 @@ class Handler(object):
                         'percentage': 0,
                         }
 
-
     def clear_handler(self):
         self.positive = {
                         'sentiment': 0,

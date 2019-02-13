@@ -12,4 +12,3 @@ class Tweet(models.Model):
     sent_rating = models.DecimalField(max_digits=19, decimal_places=10)
     origin = models.CharField(max_length=140, null=True, default='No Location data. Weird.')
     search_keyword = models.ForeignKey(UserKeyword, null=True, on_delete=models.CASCADE)
-    

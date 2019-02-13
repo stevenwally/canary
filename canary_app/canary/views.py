@@ -1,49 +1,75 @@
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.views.generic.base import TemplateView
-import tweepy
-from canary.streamer import *
-from canary.config import *
-from canary.models import *
-from canary.processor import *
 
-auth = tweepy.OAuthHandler(TWITTER_APP_KEY, TWITTER_APP_SECRET)
-auth.set_access_token(TWITTER_KEY, TWITTER_SECRET)
-api = tweepy.API(auth)
+from tweepy import OAuthHandler, API, Stream
+from streamer import *
+from config import keys
+from processor import *
+
+auth = OAuthHandler(keys['consumer_key'], keys['consumer_secret'])
+auth.set_access_token(keys['access_token'], keys['access_token_secret'])
+api = API(auth)
 stream_listener = Listener()
-stream = tweepy.Stream(auth=api.auth, listener=stream_listener)
+stream = Stream(auth=api.auth, listener=stream_listener)
+
 
 def index(request):
+    """
+
+    :param request:
+    :return:
+    """
     template_name = 'canary/index.html'
     return render(request, template_name, {})
 
 
 def start_stream(request):
-    '''
-        initiate connection to Twitter Streaming API. takes one argument -> keyword.
-    '''
-    search = request.POST
+    """
+    Initiate connection to Twitter Streaming API.
+    :param request:
+    :return:
+    """
+    query = str(request.POST['search'])
 
-    processor = Processor()
-    processor.persist_keyword(search['search'])
+    # processor = Processor()
+    # processor.persist_keyword(search['search'])
     handler.clear_handler()
-    handler.set_keyword(search['search'])
-    stream.filter(track=[search['search']], async=True)
+    handler.set_keyword(query)
+    stream.filter(track=[query], is_async=True)
 
     return HttpResponseRedirect('/visualization')
 
+
 def stop_stream(request):
+    """
+    Close connection with Twitter stream.
+    :param request:
+    :return:
+    """
 
     stream.disconnect()
     return HttpResponseRedirect('/results')
 
+
 def visualization(request):
+    """
+    Render visualization template, including data stream
+    :param request:
+    :return:
+    """
 
     template_name = 'canary/visualization.html'
     context = handler.get_data()
     return render(request, template_name, context)
 
+
 def results(request):
+    """
+    Render results template
+    :param request:
+    :return:
+    """
 
     template_name = 'canary/results.html'
     context = handler.get_data()
