@@ -1,0 +1,87 @@
+{% extends 'canary/visualization.html' %}
+
+{% load static %}
+
+{% block content %}
+<div id='data-wrapper' class='z-depth-2'>
+  <div id='search-keyword'>
+    <h1>{{positive.keyword}}</h1>
+  </div>
+</div>
+<script src="{% static 'js/refresh.js' %}"></script>
+{% endblock %}
+<!--   <div id='visualization' action="{% url 'canary:visualization' %}" method='get'>
+    <div class='row'>
+    </div> -->
+<!--     <div class='row'>
+      <div id='donut' class='col s6 left-align'>
+          <script type="text/javascript">
+            google.charts.load("current", {packages:["corechart"]});
+            google.charts.setOnLoadCallback(drawChart);
+            function drawChart() {
+              var data = google.visualization.arrayToDataTable([
+                ['Sentiment', 'Count'],
+                ['Positive',     {{positive.sentiment}}],
+                ['Neutral',  {{neutral.sentiment}}],
+                ['Negative',      {{negative.sentiment}}]
+              ]);
+
+              var options = {
+                title: 'Tweet Sentiment',
+                'fontWeight': '200',
+                backgroundColor: 'transparent',
+                is3D: 'true',
+                fontSize: '16',
+                fontName: 'Helvetica',
+                fontWeight: '200',
+                chartArea: {'width': '80%', 'height': '80%'},
+                legend: {'position': 'bottom'},
+                colors: ['#5F7992', '#779266', '#923837']
+              };
+
+              var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+              chart.draw(data, options);
+            }
+          </script>
+
+          <div id="piechart" style="width: 400px; height: 400px;"></div>
+      </div> -->
+
+      <!-- <div class='row'>
+        <div id='positive' class='col s4 right-align'>
+           <i class="emoji em em-blush"></i>
+          <p>{{positive.sentiment}} positive tweets</p>
+          {% for loc in positive.location %}
+          {% if loc != "Unknown Location" %}
+          <h6>{{loc}}</h6>
+          {% endif %}
+          {% endfor %}
+        </div> -->
+      <!-- </div> -->
+
+      <!-- <div class='row'> -->
+        <!-- <div id='neutral' class='col s4 right-align'> -->
+          <!-- <i class="emoji em em-neutral_face"></i> -->
+<!--           <p>{{neutral.sentiment}} neutral tweets</p>
+          {% for loc in neutral.location %}
+          {% if loc != "Unknown Location" %}
+          <h6>{{loc}}</h6>
+          {% endif %}
+          {% endfor %} -->
+        <!-- </div> -->
+      <!-- </div> -->
+
+      <!-- <div class='row'> -->
+        <!-- <div id='negative' class='col s4 right-align'> -->
+          <!-- <i class="emoji em em-angry"></i> -->
+<!--           <p>{{negative.sentiment}} negative tweets</p>
+          {% for loc in negative.location %}
+          {% if loc != "Unknown Location" %}
+          <h6>{{loc}}</h6>
+          {% endif %}
+          {% endfor %}
+        </div> -->
+      <!-- </div> -->
+
+<!--     </div>
+  </div> -->
