@@ -1,9 +1,10 @@
 from textblob import TextBlob
-from canary.views import *
-from canary.models import *
-from canary.handler import *
+from views import *
+from models import *
+from handler import *
 
 handler = Handler()
+
 
 class Processor(object):
 

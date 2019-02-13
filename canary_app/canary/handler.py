@@ -1,4 +1,5 @@
-from canary.models import *
+from models import *
+
 
 class Handler(object):
 
