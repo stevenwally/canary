@@ -3,3 +3,4 @@ node_modules
 *.pyc
 canary_app/canary/config.py
 db.sqlite3
+.idea
