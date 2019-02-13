@@ -1,0 +1,62 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>canary</title>
+    <!-- EMOJI CSS -->
+    <link href="https://afeld.github.io/emoji-css/emoji.css" rel="stylesheet">
+    <!-- GOOGLE CHART SCRIPT -->
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <!-- Compiled and minified CSS -->
+    <!-- LOCAL CSS -->
+{#    <link rel="stylesheet" type="text/css" href="{% static 'css/materialize.css' %}">#}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
+    <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
+</head>
+<body>
+    <div class='container'>
+
+    {% block content %}
+            <div id='search-wrap'>
+                <div class='row'>
+                    <div class='center-align'>
+                        <h1 id='main-header'>CANARY</h1>
+                    </div>
+                </div>
+                <form action="{% url 'canary:start_stream' %}" method="post">
+                    {% csrf_token %}
+                    <div class='row'>
+                        <div class='center-align'>
+                                <input id='landing-search-field' type="text" name="search" placeholder="enter a topic">
+                        </div>
+                    </div>
+
+
+                    <div class='row'>
+                        <div id='start-stream' class='center-align'>
+                            <button id="start" class='btn waves-effect waves-light grey-text text-darken-2 grey lighten-2' type="submit">Go</button>
+                        </div>
+                    </div>
+
+                </form>
+
+                <div class='row'>
+                    <div class='center-align'>
+                        <img id='twitter-logo' src="{% static 'img/Twitter_Logo_Blue.png' %}">
+                        <span class='powered'>Powered by the Twitter Streaming API</span>
+                    </div>
+                </div>
+            </div>
+        {% endblock %}
+
+    </div>    
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
+<!-- Compiled and minified JavaScript -->
+<script src="{% static 'js/main.js' %}"></script>
+{#<script src="{% static 'js/materialize.js' %}"></script>#}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+</body>
+</html>
