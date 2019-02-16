@@ -16,7 +16,7 @@ stream = Stream(auth=api.auth, listener=stream_listener)
 
 def index(request):
     """
-
+    Render landing template.
     :param request:
     :return:
     """
@@ -47,7 +47,6 @@ def stop_stream(request):
     :param request:
     :return:
     """
-
     stream.disconnect()
     return HttpResponseRedirect('/results')
 

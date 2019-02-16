@@ -5,9 +5,7 @@
 <div id='vis-wrap'>
 <!-- CONTROLS -->
   <form action="{% url 'canary:stop_stream' %}">
-
       {% csrf_token %}
-
       <div class='row'>
         <div id="stop-stream" class='center-align'>
             <button id="stop" class='btn waves-effect waves-light btn-large grey-text text-darken-2 #b3e5fc grey lighten-2' type="submit">Stop Stream</button>
@@ -15,49 +13,20 @@
       </div>
   </form>
 
-<!-- DATA VIS -->
-
   <div id='data-wrapper' class='z-depth-2'>
-
     <div id='visualization' action="{% url 'canary:visualization' %}" method='get'>
-
       <div class='row'>
-
         <div id='search-keyword'>
           <h1>Streaming results for <i>'{{positive.keyword}}'</i></h1>
         </div>
-
         <div id='loader' class='center-align'>
-
-          <!-- YELLOW -->
-          <div class="progress transparent">
-              <div class="indeterminate yellow lighten-3"></div>
-          </div>
-
-          <!-- GREEN --> 
-          <div class="progress transparent">
-              <div class="indeterminate green lighten-3"></div>
-          </div> 
-          <div class="progress transparent">
-              <div class="indeterminate green lighten-2"></div>
-          </div>     
-
-          <!-- RED -->
-          <div class="progress transparent">
-              <div class="indeterminate red lighten-3"></div>
-          </div>
-
           <!-- GREEN -->
           <div class="progress transparent">
               <div class="indeterminate green lighten-2"></div>
           </div>
+          <!-- RED -->
           <div class="progress transparent">
-              <div class="indeterminate green lighten-3"></div>
-          </div>  
-
-          <!-- YELLOW -->
-          <div class="progress transparent">
-              <div class="indeterminate yellow lighten-3"></div>
+              <div class="indeterminate red lighten-3"></div>
           </div>
         </div>
 
@@ -115,9 +84,9 @@
             </div>
           <div id='positive-locations' class='right-align'>
             {% for loc in positive.location %}
-            {% if loc != "Unknown Location" %}
-            <h6 class='tweet-data location'>{{loc}}</h6>
-            {% endif %}
+                {% if loc != "Unknown Location" %}
+                    <h6 class='tweet-data location'>{{loc}}</h6>
+                {% endif %}
             {% endfor %}
           </div>
         </div>
@@ -167,11 +136,7 @@
   </div>
 
 </div>
-
-
-
 <script src="{% static 'js/refresh.js' %}"></script>
-<script src="{% static 'js/main.js' %}"></script>
 {% endblock %}
 
 

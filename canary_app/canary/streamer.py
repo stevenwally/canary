@@ -1,5 +1,4 @@
 from tweepy.streaming import StreamListener
-from tweepy import OAuthHandler
 from processor import *
 
 processor = Processor()
@@ -7,10 +6,10 @@ processor = Processor()
 
 class Listener(StreamListener):
 
-    def on_status(self, status):
-        # Get tweets -> exclude retweets
-        print status
-        processor.process_tweets(status)
+    def on_status(self, tweet):
+        # Get tweets, send to processor
+        print tweet
+        processor.process_tweet(tweet)
         # if 'RT @' in status.text:
         #     return
         # else:
