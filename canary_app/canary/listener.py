@@ -1,15 +1,16 @@
 from processor import *
 from tweepy.streaming import StreamListener
 
-processor = Processor()
-
 
 class Listener(StreamListener):
+    def __init__(self, processor=None, *args, **kwargs):
+        super(Listener, self).__init__(*args, **kwargs)
+        self.processor = processor
 
     def on_status(self, tweet):
-        # Get tweets, send to processor
-        print tweet
-        processor.process_tweet(tweet)
+        # Get/process tweets on arrival.
+        if self.processor:
+            self.processor.process_tweet(tweet)
         # if 'RT @' in status.text:
         #     return
         # else:
