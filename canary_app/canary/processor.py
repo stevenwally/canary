@@ -4,7 +4,6 @@ from handler import *
 
 handler = Handler()
 
-
 class Processor(object):
     def __init__(self):
         self.tweet_text = None

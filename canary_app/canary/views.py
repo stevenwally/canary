@@ -1,3 +1,5 @@
+from processor import *
+
 from listener import Listener
 from config import keys
 from django.shortcuts import render

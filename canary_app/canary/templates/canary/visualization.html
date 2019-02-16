@@ -36,9 +36,9 @@
 
         <div id='donut' class='col s6 left-align'>
             <script type="text/javascript">
-                SentimentValues.positive = {{ positive.sentiment }};
-                SentimentValues.negative = {{ negative.sentiment }};
-                SentimentValues.neutral = {{ neutral.sentiment }};
+                SentimentValues.positive = {{ positive.sentiment_value }};
+                SentimentValues.negative = {{ negative.sentiment_value }};
+                SentimentValues.neutral = {{ neutral.sentiment_value }};
 
                 google.charts.load("current", {packages:["corechart"]});
                 google.charts.setOnLoadCallback(drawChart);
@@ -76,7 +76,7 @@
         <!-- POSITIVE SENTIMENT CARD -->
         <div id='positive' class='col s4 z-depth-2'>
             <div class='left-align tweet-overview'>
-              <span class='tweet-data'><b><span class='sentiment-count'>{{positive.sentiment}}</span></b> positive tweets</span>
+              <span class='tweet-data'><b><span class='sentiment-count'>{{positive.sentiment_value}}</span></b> positive tweets</span>
             </div>
             <div class='right-align tweet-origin'>
               <span class='tweet-data'>Origin</span>
@@ -93,7 +93,7 @@
         <!-- NEUTRAL SENTIMENT CARD -->
         <div id='neutral' class='col s4 z-depth-2'>
           <div class='left-align tweet-overview'>
-            <span class='tweet-data'><b><span class='sentiment-count'>{{neutral.sentiment}}</span></b> neutral tweets</span>
+            <span class='tweet-data'><b><span class='sentiment-count'>{{neutral.sentiment_value}}</span></b> neutral tweets</span>
           </div>
           <div class='right-align tweet-origin'>
             <span class='tweet-data'>Origin</span>
@@ -110,7 +110,7 @@
         <!-- NEGATIVE SENTIMENT CARD -->
         <div id='negative' class='col s4 z-depth-2'>
           <div class='left-align tweet-overview'>
-            <span class='tweet-data'><b><span class='sentiment-count'>{{negative.sentiment}}</span></b> negative tweets</span>
+            <span class='tweet-data'><b><span class='sentiment-count'>{{negative.sentiment_value}}</span></b> negative tweets</span>
           </div>
           <div class='right-align tweet-origin'>
             <span class='tweet-data'>Origin</span>

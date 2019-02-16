@@ -38,9 +38,9 @@
               function drawChart() {
                 var data = google.visualization.arrayToDataTable([
                   ['Sentiment', 'Count'],
-                  ['Positive',     {{positive.sentiment}}],
-                  ['Neutral',  {{neutral.sentiment}}],
-                  ['Negative',      {{negative.sentiment}}]
+                  ['Positive',     {{positive.sentiment_value}}],
+                  ['Neutral',  {{neutral.sentiment_value}}],
+                  ['Negative',      {{negative.sentiment_value}}]
                 ]);
 
                 var options = {
@@ -69,7 +69,7 @@
 
         <div id='positive' class='col s4 z-depth-2'>
             <div class='left-align tweet-overview'>
-              <span class='tweet-data'><b>{{positive.sentiment}}</b> positive tweets</span>
+              <span class='tweet-data'><b>{{positive.sentiment_value}}</b> positive tweets</span>
             </div>
             <div class='right-align tweet-origin'>
               <span class='tweet-data'>Origin</span>
@@ -85,7 +85,7 @@
 
         <div id='neutral' class='col s4 z-depth-2'>
           <div class='left-align tweet-overview'>
-            <span class='tweet-data'><b>{{neutral.sentiment}}</b> neutral tweets</span>
+            <span class='tweet-data'><b>{{neutral.sentiment_value}}</b> neutral tweets</span>
           </div>
           <div class='right-align tweet-origin'>
             <span class='tweet-data'>Origin</span>
@@ -101,7 +101,7 @@
 
         <div id='negative' class='col s4 z-depth-2'>
           <div class='left-align tweet-overview'>
-            <span class='tweet-data'><b>{{negative.sentiment}}</b> negative tweets</span>
+            <span class='tweet-data'><b>{{negative.sentiment_value}}</b> negative tweets</span>
           </div>
           <div class='right-align tweet-origin'>
             <span class='tweet-data'>Origin</span>
