@@ -1,18 +1,59 @@
 from textblob import TextBlob
-from views import *
-from handler import *
+from sentiment import Sentiment
 
-handler = Handler()
 
 class Processor(object):
     def __init__(self):
-        self.tweet_text = None
-        self.keyword = None
-        self.loc = None
-        self.coords = None
-        self.polarity = 0
-        self.top_rt = None
-        self.rt_count = 0
+        self.data = {
+            'text': None,
+            'keyword': None,
+            'loc': None,
+            'polarity': 0,
+            'positive': Sentiment(),
+            'negative': Sentiment(),
+            'neutral': Sentiment()
+        }
+
+    def clear(self):
+        self.__init__()
+
+    def _increment_sentiment(self, polarity):
+        if polarity > 0:
+            self.data['positive'].increment_sentiment_value()
+        elif polarity < 0:
+            self.data['negative'].increment_sentiment_value()
+        else:
+            self.data['neutral'].increment_sentiment_value()
+
+    def set_origin(self, origin, polarity):
+        if polarity > 0:
+            self.data['positive'].add_origin(origin)
+        elif polarity < 0:
+            self.data['negative'].add_origin(origin)
+        else:
+            self.data['neutral'].add_origin(origin)
+
+    def set_keyword(self, keyword):
+        self.data['positive'].set_keyword(keyword)
+        self.data['negative'].set_keyword(keyword)
+        self.data['neutral'].set_keyword(keyword)
+
+    def _set_tweet_text(self, text, polarity):
+        if polarity > 0:
+            self.data['positive'].add_tweet(text)
+        elif polarity < 0:
+            self.data['negative'].add_tweet(text)
+        else:
+            self.data['neutral'].add_tweet(text)
+
+    def _determine_percentage(self):
+        # TODO: This calculation should be broken out into another function. Way too messy.
+        self.data['positive'].set_percentage(round(self.data['positive'].get_sentiment_value() / (self.data['positive'].get_sentiment_value() + self.data['negative'].get_sentiment_value() + self.data['neutral'].get_sentiment_value()) * 100, 1))
+        self.data['negative'].set_percentage(round(self.data['negative'].get_sentiment_value() / (self.data['positive'].get_sentiment_value() + self.data['negative'].get_sentiment_value() + self.data['neutral'].get_sentiment_value()) * 100, 1))
+        self.data['neutral'].set_percentage(round(self.data['neutral'].get_sentiment_value() / (self.data['positive'].get_sentiment_value() + self.data['negative'].get_sentiment_value() + self.data['neutral'].get_sentiment_value()) * 100, 1))
+
+    def get_data(self):
+        return self.data
 
     def process_tweet(self, tweet):
         """
@@ -21,27 +62,27 @@ class Processor(object):
         :return:
         """
 
-    # assign tweet text
-        self.tweet_text = tweet.text
+        # assign tweet text
+        self.data['text'] = tweet.text
 
-    # assign sentiment values
-        sentiment = TextBlob(tweet.text).sentiment
-        self.polarity = sentiment.polarity
+        # assign sentiment values
+        sentiment = TextBlob(self.data['text']).sentiment
+        self.data['polarity'] = sentiment.polarity
 
-        handler.set_sentiment(self.polarity)
-        handler.set_tweet(self.tweet_text, self.polarity)
-        handler.set_percentage()
+        self._increment_sentiment(self.data['polarity'])
+        self._set_tweet_text(self.data['text'], self.data['polarity'])
+        self._determine_percentage()
 
         if tweet.place is not None:
             if tweet.place.country_code is not None:
-                self.loc = tweet.place.country_code
+                self.data['loc'] = tweet.place.country_code
             elif tweet.place.country is not None:
-                self.loc = tweet.place.country
+                self.data['loc'] = tweet.place.country
             else:
-                self.loc = "Unknown Location"
+                self.data['loc'] = 'Unknown Origin'
         elif tweet.user.location is not None:
-            self.loc = tweet.user.location
+            self.data['loc'] = tweet.user.location
         else:
-            self.loc = "Unknown Location"
+            self.data['loc'] = 'Unknown Origin'
 
-        handler.set_location(self.loc, self.polarity)
+        self.set_origin(self.data['loc'], self.data['polarity'])
