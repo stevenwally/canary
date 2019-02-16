@@ -1,11 +1,9 @@
+from listener import Listener
+from config import keys
 from django.shortcuts import render
-from django.http import HttpResponse, HttpResponseRedirect
-from django.views.generic.base import TemplateView
+from django.http import HttpResponseRedirect
 
 from tweepy import OAuthHandler, API, Stream
-from streamer import *
-from config import keys
-from processor import *
 
 auth = OAuthHandler(keys['consumer_key'], keys['consumer_secret'])
 auth.set_access_token(keys['access_token'], keys['access_token_secret'])
