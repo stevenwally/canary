@@ -79,11 +79,11 @@
               <span class='tweet-data'><b><span class='sentiment-count'>{{positive.sentiment_value}}</span></b> positive tweets</span>
             </div>
             <div class='right-align tweet-origin'>
-              <span class='tweet-data'>Origin</span>
+              <span class='tweet-data'>Origins</span>
             </div>
           <div id='positive-locations' class='right-align'>
-            {% for loc in positive.location %}
-                {% if loc != "Unknown Location" %}
+            {% for loc in positive.origins %}
+                {% if loc != "Unknown Origin" %}
                     <h6 class='tweet-data location'>{{loc}}</h6>
                 {% endif %}
             {% endfor %}
@@ -96,11 +96,11 @@
             <span class='tweet-data'><b><span class='sentiment-count'>{{neutral.sentiment_value}}</span></b> neutral tweets</span>
           </div>
           <div class='right-align tweet-origin'>
-            <span class='tweet-data'>Origin</span>
+            <span class='tweet-data'>Origins</span>
           </div>
           <div id='neutral-locations' class='right-align'>
-            {% for loc in neutral.location %}
-            {% if loc != "Unknown Location" %}
+            {% for loc in neutral.origins %}
+            {% if loc != "Unknown Origin" %}
             <h6 class='tweet-data location'>{{loc}}</h6>
             {% endif %}
             {% endfor %}
@@ -113,11 +113,11 @@
             <span class='tweet-data'><b><span class='sentiment-count'>{{negative.sentiment_value}}</span></b> negative tweets</span>
           </div>
           <div class='right-align tweet-origin'>
-            <span class='tweet-data'>Origin</span>
+            <span class='tweet-data'>Origins</span>
           </div>
           <div id='negative-locations' class='tweet-data right-align'>
-            {% for loc in negative.location %}
-            {% if loc != "Unknown Location" %}
+            {% for loc in negative.origins %}
+            {% if loc != "Unknown Origin" %}
             <h6 class='tweet-data location'>{{loc}}</h6>
             {% endif %}
             {% endfor %}
