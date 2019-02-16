@@ -1,10 +1,9 @@
 setTimeout( () => {
-    console.log('reload');
     $.ajax({
-        url: "{% url 'canary:visualization' %}",
-        success: function(data) {
-            $('body').html(data);
-        }
+        url: "{% url 'canary:visualization' %}"
+    })
+    .done( (data) => {
+        $('body').html(data);
     });
 }, 3000);
 
