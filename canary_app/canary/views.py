@@ -7,10 +7,13 @@ from django.http import HttpResponseRedirect
 
 from tweepy import OAuthHandler, API, Stream
 
+TweetProcessor = Processor()
+
 auth = OAuthHandler(keys['consumer_key'], keys['consumer_secret'])
 auth.set_access_token(keys['access_token'], keys['access_token_secret'])
 api = API(auth)
-stream_listener = Listener()
+
+stream_listener = Listener(processor=TweetProcessor)
 stream = Stream(auth=api.auth, listener=stream_listener)
 
 
