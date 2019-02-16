@@ -35,8 +35,8 @@ def start_stream(request):
     """
     query = str(request.POST['search'])
 
-    handler.clear_handler()
-    handler.set_keyword(query)
+    TweetProcessor.clear()
+    TweetProcessor.set_keyword(query)
     stream.filter(track=[query], is_async=True)
 
     return HttpResponseRedirect('/visualization')
