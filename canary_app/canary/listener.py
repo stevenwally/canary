@@ -1,5 +1,5 @@
-from tweepy.streaming import StreamListener
 from processor import *
+from tweepy.streaming import StreamListener
 
 processor = Processor()
 
