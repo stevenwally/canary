@@ -1,22 +1,25 @@
+from processor import *
+
+from listener import Listener
+from config import keys
 from django.shortcuts import render
-from django.http import HttpResponse, HttpResponseRedirect
-from django.views.generic.base import TemplateView
+from django.http import HttpResponseRedirect
 
 from tweepy import OAuthHandler, API, Stream
-from streamer import *
-from config import keys
-from processor import *
+
+TweetProcessor = Processor()
 
 auth = OAuthHandler(keys['consumer_key'], keys['consumer_secret'])
 auth.set_access_token(keys['access_token'], keys['access_token_secret'])
 api = API(auth)
-stream_listener = Listener()
-stream = Stream(auth=api.auth, listener=stream_listener)
+
+listener = Listener(processor=TweetProcessor)
+stream = Stream(auth=api.auth, listener=listener)
 
 
 def index(request):
     """
-
+    Render landing template.
     :param request:
     :return:
     """
@@ -32,10 +35,8 @@ def start_stream(request):
     """
     query = str(request.POST['search'])
 
-    # processor = Processor()
-    # processor.persist_keyword(search['search'])
-    handler.clear_handler()
-    handler.set_keyword(query)
+    TweetProcessor.clear()
+    TweetProcessor.set_keyword(query)
     stream.filter(track=[query], is_async=True)
 
     return HttpResponseRedirect('/visualization')
@@ -47,7 +48,6 @@ def stop_stream(request):
     :param request:
     :return:
     """
-
     stream.disconnect()
     return HttpResponseRedirect('/results')
 
@@ -60,8 +60,8 @@ def visualization(request):
     """
 
     template_name = 'canary/visualization.html'
-    context = handler.get_data()
-    return render(request, template_name, context)
+    data = TweetProcessor.get_data()
+    return render(request, template_name, data)
 
 
 def results(request):
@@ -72,5 +72,5 @@ def results(request):
     """
 
     template_name = 'canary/results.html'
-    context = handler.get_data()
-    return render(request, template_name, context)
+    data = TweetProcessor.get_data()
+    return render(request, template_name, data)

@@ -38,9 +38,9 @@
               function drawChart() {
                 var data = google.visualization.arrayToDataTable([
                   ['Sentiment', 'Count'],
-                  ['Positive',     {{positive.sentiment}}],
-                  ['Neutral',  {{neutral.sentiment}}],
-                  ['Negative',      {{negative.sentiment}}]
+                  ['Positive',     {{positive.sentiment_value}}],
+                  ['Neutral',  {{neutral.sentiment_value}}],
+                  ['Negative',      {{negative.sentiment_value}}]
                 ]);
 
                 var options = {
@@ -69,48 +69,48 @@
 
         <div id='positive' class='col s4 z-depth-2'>
             <div class='left-align tweet-overview'>
-              <span class='tweet-data'><b>{{positive.sentiment}}</b> positive tweets</span>
+              <span class='tweet-data'><b>{{positive.sentiment_value}}</b> positive tweets</span>
             </div>
             <div class='right-align tweet-origin'>
-              <span class='tweet-data'>Origin</span>
+              <span class='tweet-data'>Origins</span>
             </div>
           <div id='positive-locations' class='right-align'>
-            {% for loc in positive.location %}
-            {% if loc != "Unknown Location" %}
-            <h6 class='tweet-data location'>{{loc}}</h6>
-            {% endif %}
+            {% for loc in positive.origins %}
+                {% if loc != "Unknown Origin" %}
+                    <h6 class='tweet-data location'>{{loc}}</h6>
+                {% endif %}
             {% endfor %}
           </div>
         </div>
 
         <div id='neutral' class='col s4 z-depth-2'>
           <div class='left-align tweet-overview'>
-            <span class='tweet-data'><b>{{neutral.sentiment}}</b> neutral tweets</span>
+            <span class='tweet-data'><b>{{neutral.sentiment_value}}</b> neutral tweets</span>
           </div>
           <div class='right-align tweet-origin'>
-            <span class='tweet-data'>Origin</span>
+            <span class='tweet-data'>Origins</span>
           </div>
           <div id='neutral-locations' class='right-align'>
-            {% for loc in neutral.location %}
-            {% if loc != "Unknown Location" %}
-            <h6 class='tweet-data location'>{{loc}}</h6>
-            {% endif %}
+            {% for loc in neutral.origins %}
+                {% if loc != "Unknown Origin" %}
+                    <h6 class='tweet-data location'>{{loc}}</h6>
+                {% endif %}
             {% endfor %}
           </div>
         </div>
 
         <div id='negative' class='col s4 z-depth-2'>
           <div class='left-align tweet-overview'>
-            <span class='tweet-data'><b>{{negative.sentiment}}</b> negative tweets</span>
+            <span class='tweet-data'><b>{{negative.sentiment_value}}</b> negative tweets</span>
           </div>
           <div class='right-align tweet-origin'>
-            <span class='tweet-data'>Origin</span>
+            <span class='tweet-data'>Origins</span>
           </div>
           <div id='negative-locations' class='tweet-data right-align'>
-            {% for loc in negative.location %}
-            {% if loc != "Unknown Location" %}
-            <h6 class='tweet-data location'>{{loc}}</h6>
-            {% endif %}
+            {% for loc in negative.origins %}
+                {% if loc != "Unknown Origin" %}
+                    <h6 class='tweet-data location'>{{loc}}</h6>
+                {% endif %}
             {% endfor %}
           </div>
         </div>

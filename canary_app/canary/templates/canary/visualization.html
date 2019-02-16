@@ -5,9 +5,7 @@
 <div id='vis-wrap'>
 <!-- CONTROLS -->
   <form action="{% url 'canary:stop_stream' %}">
-
       {% csrf_token %}
-
       <div class='row'>
         <div id="stop-stream" class='center-align'>
             <button id="stop" class='btn waves-effect waves-light btn-large grey-text text-darken-2 #b3e5fc grey lighten-2' type="submit">Stop Stream</button>
@@ -15,49 +13,20 @@
       </div>
   </form>
 
-<!-- DATA VIS -->
-
   <div id='data-wrapper' class='z-depth-2'>
-
     <div id='visualization' action="{% url 'canary:visualization' %}" method='get'>
-
       <div class='row'>
-
         <div id='search-keyword'>
           <h1>Streaming results for <i>'{{positive.keyword}}'</i></h1>
         </div>
-
         <div id='loader' class='center-align'>
-
-          <!-- YELLOW -->
-          <div class="progress transparent">
-              <div class="indeterminate yellow lighten-3"></div>
-          </div>
-
-          <!-- GREEN --> 
-          <div class="progress transparent">
-              <div class="indeterminate green lighten-3"></div>
-          </div> 
-          <div class="progress transparent">
-              <div class="indeterminate green lighten-2"></div>
-          </div>     
-
-          <!-- RED -->
-          <div class="progress transparent">
-              <div class="indeterminate red lighten-3"></div>
-          </div>
-
           <!-- GREEN -->
           <div class="progress transparent">
               <div class="indeterminate green lighten-2"></div>
           </div>
+          <!-- RED -->
           <div class="progress transparent">
-              <div class="indeterminate green lighten-3"></div>
-          </div>  
-
-          <!-- YELLOW -->
-          <div class="progress transparent">
-              <div class="indeterminate yellow lighten-3"></div>
+              <div class="indeterminate red lighten-3"></div>
           </div>
         </div>
 
@@ -66,41 +35,40 @@
       <div class='row'>
 
         <div id='donut' class='col s6 left-align'>
+            <script type="text/javascript">
+                SentimentValues.positive = {{ positive.sentiment_value }};
+                SentimentValues.negative = {{ negative.sentiment_value }};
+                SentimentValues.neutral = {{ neutral.sentiment_value }};
 
+                google.charts.load("current", {packages:["corechart"]});
+                google.charts.setOnLoadCallback(drawChart);
+                function drawChart() {
+                    let data = google.visualization.arrayToDataTable([
+                        ['Sentiment', 'Count'],
+                        ['Positive', SentimentValues.positive],
+                        ['Negative', SentimentValues.negative],
+                        ['Neutral', SentimentValues.neutral]
+                    ]);
 
-          <script type="text/javascript">
-              google.charts.load("current", {packages:["corechart"]});
-              google.charts.setOnLoadCallback(drawChart);
-              function drawChart() {
-                var data = google.visualization.arrayToDataTable([
-                  ['Sentiment', 'Count'],
-                  ['Positive',     {{positive.sentiment}}],
-                  ['Neutral',  {{neutral.sentiment}}],
-                  ['Negative',      {{negative.sentiment}}]
-                ]);
+                    let options = {
+                      title: 'Tweet Sentiment',
+                      sliceVisibilityThreshold: 0,
+                      backgroundColor: 'transparent',
+                      is3D: 'true',
+                      fontSize: '16',
+                      fontName: 'Helvetica',
+                      fontWeight: '200',
+                      chartArea: {'width': '80%', 'height': '80%'},
+                      legend: {'position': 'bottom'},
+                      circle: {'width': '500px'},
+                      colors: ['#5DCF72', '#D0D16E', '#D17571']
+                    };
 
-                var options = {
-                  title: 'Tweet Sentiment',
-                  'fontWeight': '200',
-                  sliceVisibilityThreshold: 0,
-                  backgroundColor: 'transparent',
-                  is3D: 'true',
-                  fontSize: '16',
-                  fontName: 'Helvetica',
-                  fontWeight: '200',
-                  chartArea: {'width': '80%', 'height': '80%'},
-                  legend: {'position': 'bottom'},
-                  circle: {'width': '500px'},
-                  colors: ['#5DCF72', '#D0D16E', '#D17571']
-                  /////// positive //// neutral // negative
-                };
-
-                var chart = new google.visualization.PieChart(document.getElementById('piechart'));
-                chart.draw(data, options);
+                    let chart = new google.visualization.PieChart(document.getElementById('piechart'));
+                    chart.draw(data, options);
                 }
 
-                var all_sentiment = [{{positive.sentiment}}, {{negative.sentiment}}, {{neutral.sentiment}}];
-          </script>
+            </script>
 
           <div id="piechart" style="width: 400px; height: 400px;"></div>
         </div>
@@ -108,16 +76,16 @@
         <!-- POSITIVE SENTIMENT CARD -->
         <div id='positive' class='col s4 z-depth-2'>
             <div class='left-align tweet-overview'>
-              <span class='tweet-data'><b><span class='sentiment-count'>{{positive.sentiment}}</span></b> positive tweets</span>
+              <span class='tweet-data'><b><span class='sentiment-count'>{{positive.sentiment_value}}</span></b> positive tweets</span>
             </div>
             <div class='right-align tweet-origin'>
-              <span class='tweet-data'>Origin</span>
+              <span class='tweet-data'>Origins</span>
             </div>
           <div id='positive-locations' class='right-align'>
-            {% for loc in positive.location %}
-            {% if loc != "Unknown Location" %}
-            <h6 class='tweet-data location'>{{loc}}</h6>
-            {% endif %}
+            {% for loc in positive.origins %}
+                {% if loc != "Unknown Origin" %}
+                    <h6 class='tweet-data location'>{{loc}}</h6>
+                {% endif %}
             {% endfor %}
           </div>
         </div>
@@ -125,14 +93,14 @@
         <!-- NEUTRAL SENTIMENT CARD -->
         <div id='neutral' class='col s4 z-depth-2'>
           <div class='left-align tweet-overview'>
-            <span class='tweet-data'><b><span class='sentiment-count'>{{neutral.sentiment}}</span></b> neutral tweets</span>
+            <span class='tweet-data'><b><span class='sentiment-count'>{{neutral.sentiment_value}}</span></b> neutral tweets</span>
           </div>
           <div class='right-align tweet-origin'>
-            <span class='tweet-data'>Origin</span>
+            <span class='tweet-data'>Origins</span>
           </div>
           <div id='neutral-locations' class='right-align'>
-            {% for loc in neutral.location %}
-            {% if loc != "Unknown Location" %}
+            {% for loc in neutral.origins %}
+            {% if loc != "Unknown Origin" %}
             <h6 class='tweet-data location'>{{loc}}</h6>
             {% endif %}
             {% endfor %}
@@ -142,14 +110,14 @@
         <!-- NEGATIVE SENTIMENT CARD -->
         <div id='negative' class='col s4 z-depth-2'>
           <div class='left-align tweet-overview'>
-            <span class='tweet-data'><b><span class='sentiment-count'>{{negative.sentiment}}</span></b> negative tweets</span>
+            <span class='tweet-data'><b><span class='sentiment-count'>{{negative.sentiment_value}}</span></b> negative tweets</span>
           </div>
           <div class='right-align tweet-origin'>
-            <span class='tweet-data'>Origin</span>
+            <span class='tweet-data'>Origins</span>
           </div>
           <div id='negative-locations' class='tweet-data right-align'>
-            {% for loc in negative.location %}
-            {% if loc != "Unknown Location" %}
+            {% for loc in negative.origins %}
+            {% if loc != "Unknown Origin" %}
             <h6 class='tweet-data location'>{{loc}}</h6>
             {% endif %}
             {% endfor %}
@@ -167,11 +135,7 @@
   </div>
 
 </div>
-
-
-
 <script src="{% static 'js/refresh.js' %}"></script>
-<script src="{% static 'js/main.js' %}"></script>
 {% endblock %}
 
 
