@@ -3,7 +3,7 @@ class Sentiment(object):
     def __init__(self):
         self.sentiment_value = 0
         self.tweets = []
-        self.location = []
+        self.origins = []
         self.percentage = None
         self.keyword = None
 
@@ -22,11 +22,11 @@ class Sentiment(object):
     def add_tweet(self, tweet):
         self.tweets.append(tweet)
 
-    def get_location(self):
-        return self.location
+    def get_origins(self):
+        return self.origins
 
-    def add_location(self, location):
-        self.location.append(location)
+    def add_origin(self, location):
+        self.origins.append(location)
 
     def get_percentage(self):
         return self.percentage
