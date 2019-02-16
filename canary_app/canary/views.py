@@ -32,8 +32,6 @@ def start_stream(request):
     """
     query = str(request.POST['search'])
 
-    # processor = Processor()
-    # processor.persist_keyword(search['search'])
     handler.clear_handler()
     handler.set_keyword(query)
     stream.filter(track=[query], is_async=True)
