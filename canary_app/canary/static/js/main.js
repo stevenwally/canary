@@ -1,6 +1,6 @@
 ( () => {
     if (window.location.href.includes('/visualization')) {
-        streamCount(SentimentValues) ? showResults() : hideResults()
+        streamCount(SentimentValues) ? showResults() : hideResults();
     }
 
     function showResults() {
