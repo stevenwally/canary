@@ -35,41 +35,40 @@
       <div class='row'>
 
         <div id='donut' class='col s6 left-align'>
+            <script type="text/javascript">
+                SentimentValues.positive = {{ positive.sentiment }};
+                SentimentValues.negative = {{ negative.sentiment }};
+                SentimentValues.neutral = {{ neutral.sentiment }};
 
+                google.charts.load("current", {packages:["corechart"]});
+                google.charts.setOnLoadCallback(drawChart);
+                function drawChart() {
+                    let data = google.visualization.arrayToDataTable([
+                        ['Sentiment', 'Count'],
+                        ['Positive', SentimentValues.positive],
+                        ['Negative', SentimentValues.negative],
+                        ['Neutral', SentimentValues.neutral]
+                    ]);
 
-          <script type="text/javascript">
-              google.charts.load("current", {packages:["corechart"]});
-              google.charts.setOnLoadCallback(drawChart);
-              function drawChart() {
-                var data = google.visualization.arrayToDataTable([
-                  ['Sentiment', 'Count'],
-                  ['Positive',     {{positive.sentiment}}],
-                  ['Neutral',  {{neutral.sentiment}}],
-                  ['Negative',      {{negative.sentiment}}]
-                ]);
+                    let options = {
+                      title: 'Tweet Sentiment',
+                      sliceVisibilityThreshold: 0,
+                      backgroundColor: 'transparent',
+                      is3D: 'true',
+                      fontSize: '16',
+                      fontName: 'Helvetica',
+                      fontWeight: '200',
+                      chartArea: {'width': '80%', 'height': '80%'},
+                      legend: {'position': 'bottom'},
+                      circle: {'width': '500px'},
+                      colors: ['#5DCF72', '#D0D16E', '#D17571']
+                    };
 
-                var options = {
-                  title: 'Tweet Sentiment',
-                  'fontWeight': '200',
-                  sliceVisibilityThreshold: 0,
-                  backgroundColor: 'transparent',
-                  is3D: 'true',
-                  fontSize: '16',
-                  fontName: 'Helvetica',
-                  fontWeight: '200',
-                  chartArea: {'width': '80%', 'height': '80%'},
-                  legend: {'position': 'bottom'},
-                  circle: {'width': '500px'},
-                  colors: ['#5DCF72', '#D0D16E', '#D17571']
-                  /////// positive //// neutral // negative
-                };
-
-                var chart = new google.visualization.PieChart(document.getElementById('piechart'));
-                chart.draw(data, options);
+                    let chart = new google.visualization.PieChart(document.getElementById('piechart'));
+                    chart.draw(data, options);
                 }
 
-                var all_sentiment = [{{positive.sentiment}}, {{negative.sentiment}}, {{neutral.sentiment}}];
-          </script>
+            </script>
 
           <div id="piechart" style="width: 400px; height: 400px;"></div>
         </div>
