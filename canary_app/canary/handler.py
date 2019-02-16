@@ -99,8 +99,6 @@ class Handler(object):
             self.neutral['location'].append(location)
 
     def get_data(self):
-
         return {'positive': self.positive,
                 'negative': self.negative, 
-                'neutral': self.neutral,
-                }
+                'neutral': self.neutral}
