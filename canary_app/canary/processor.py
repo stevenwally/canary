@@ -47,7 +47,6 @@ class Processor(object):
             self.data['neutral'].add_tweet(text)
 
     def _determine_set_percentage(self, sentiment):
-        # TODO: This calculation should be broken out into another function. Way too messy.
         total_value = sum([self.data['positive'].get_sentiment_value(),
                            self.data['negative'].get_sentiment_value(),
                            self.data['neutral'].get_sentiment_value()])
