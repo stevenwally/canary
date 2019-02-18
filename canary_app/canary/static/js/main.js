@@ -5,18 +5,12 @@
 
     function showResults() {
         $('#loader').hide();
-        $('#donut').show();
-        $('#positive').show();
-        $('#neutral').show();
-        $('#negative').show();
+        $('.viz-elements').show();
     }
 
     function hideResults() {
         $('#loader').show();
-        $('#donut').hide();
-        $('#positive').hide();
-        $('#neutral').hide();
-        $('#negative').hide();
+        $('.viz-elements').hide();
     }
 
     function streamCount(values) {
