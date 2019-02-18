@@ -4,10 +4,6 @@ html {
     font-weight: 200;
 }
 
-h1, h2, h3, h4, h5, h6, p {
-    font-weight: 200;
-}
-
 text {
     font-weight: 200;
 }
@@ -107,19 +103,15 @@ input#landing-search-field {
     margin: 0;
 }
 
-.indeterminate {
-    padding: 0;
-    margin: 0;
-}
+/*.indeterminate {*/
+    /*padding: 0;*/
+    /*margin: 0;*/
+/*}*/
 
 #search-keyword {
     
     margin: 0 auto;
     padding: 0 auto;
-}
-
-.emoji {
-    font-size: 3em;
 }
 
 #data-wrapper {
