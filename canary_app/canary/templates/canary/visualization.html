@@ -32,7 +32,7 @@
 
       </div>
 
-      <div class='row'>
+      <div class='row viz-elements'>
 
         <div id='donut' class='col s6 left-align'>
             <script type="text/javascript">
@@ -81,7 +81,7 @@
             <div class='right-align tweet-origin'>
               <span class='tweet-data'>Origins</span>
             </div>
-          <div id='positive-locations' class='right-align'>
+            <div id='positive-locations' class='right-align'>
             {% for loc in positive.origins %}
                 {% if loc != "Unknown Origin" %}
                     <h6 class='tweet-data location'>{{loc}}</h6>
@@ -123,6 +123,7 @@
             {% endfor %}
           </div>
         </div>
+
       </div>
     </div>
   </div>
