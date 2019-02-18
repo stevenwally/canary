@@ -15,6 +15,7 @@
 
   <div id='data-wrapper' class='z-depth-2'>
     <div id='visualization' action="{% url 'canary:visualization' %}" method='get'>
+
       <div class='row'>
         <div id='search-keyword'>
           <h1>Streaming results for <i>'{{positive.keyword}}'</i></h1>
@@ -29,11 +30,9 @@
               <div class="indeterminate red lighten-3"></div>
           </div>
         </div>
-
       </div>
 
       <div class='row viz-elements'>
-
         <div id='donut' class='col s6 left-align'>
             <script type="text/javascript">
                 SentimentValues.positive = {{ positive.sentiment_value }};
@@ -123,7 +122,6 @@
             {% endfor %}
           </div>
         </div>
-
       </div>
     </div>
   </div>
