@@ -125,9 +125,9 @@ input#landing-search-field {
 #data-wrapper {
     border: 0.55px solid #E7E7E7;
     background-color: #F8F8F8;
-    margin: 0 auto;
-    margin-top: 2em;
+    margin: 2em auto 0 auto;
     padding-bottom: 1em;
+    height: 705px !important;
 }
 
 #visualization {
