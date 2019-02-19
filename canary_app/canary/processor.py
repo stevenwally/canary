@@ -46,11 +46,12 @@ class Processor(object):
         else:
             self.data['neutral'].add_tweet(text)
 
-    def _determine_percentage(self):
-        # TODO: This calculation should be broken out into another function. Way too messy.
-        self.data['positive'].set_percentage(round(self.data['positive'].get_sentiment_value() / (self.data['positive'].get_sentiment_value() + self.data['negative'].get_sentiment_value() + self.data['neutral'].get_sentiment_value()) * 100, 1))
-        self.data['negative'].set_percentage(round(self.data['negative'].get_sentiment_value() / (self.data['positive'].get_sentiment_value() + self.data['negative'].get_sentiment_value() + self.data['neutral'].get_sentiment_value()) * 100, 1))
-        self.data['neutral'].set_percentage(round(self.data['neutral'].get_sentiment_value() / (self.data['positive'].get_sentiment_value() + self.data['negative'].get_sentiment_value() + self.data['neutral'].get_sentiment_value()) * 100, 1))
+    def _determine_set_percentage(self, sentiment):
+        total_value = sum([self.data['positive'].get_sentiment_value(),
+                           self.data['negative'].get_sentiment_value(),
+                           self.data['neutral'].get_sentiment_value()])
+
+        sentiment.set_percentage(round(sentiment.get_sentiment_value() / total_value * 100, 1))
 
     def get_data(self):
         return self.data
@@ -71,7 +72,10 @@ class Processor(object):
 
         self._increment_sentiment(self.data['polarity'])
         self._set_tweet_text(self.data['text'], self.data['polarity'])
-        self._determine_percentage()
+
+        self._determine_set_percentage(self.data['positive'])
+        self._determine_set_percentage(self.data['negative'])
+        self._determine_set_percentage(self.data['neutral'])
 
         if tweet.place is not None:
             if tweet.place.country_code is not None:
