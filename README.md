@@ -8,7 +8,7 @@ canary utilizes Twitter's Streaming API to gather tweets based on the user's sea
 4. After user has discontinued current stream, user can enter new topic or keyword and begin a new analysis.
 
 ## Installation
-[Contact me](https://www.github.com/stevenwally) with any question.
+[Contact me](https://www.github.com/stevenwally) with any questions.
 
 
 ## Built With
