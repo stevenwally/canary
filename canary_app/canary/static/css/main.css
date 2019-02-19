@@ -153,7 +153,8 @@ img#twitter-logo {
 }
 
 .origin-wrapper {
-    border: solid 3px #E7E7E7 !important;
+    border: solid 2px #E7E7E7 !important;
+    border-radius: 4px;
     font-weight: 300;
     margin: 0.50em auto;
     height: 175px;
