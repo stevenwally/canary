@@ -2,38 +2,43 @@
 
 {% load static %}
 {% block content %}
-<div id='vis-wrap'>
 <!-- CONTROLS -->
+<div class="controls">
   <form action="{% url 'canary:stop_stream' %}">
       {% csrf_token %}
       <div class='row'>
-        <div id="stop-stream" class='center-align'>
+        <div class='stop-stream center-align'>
             <button id="stop" class='btn waves-effect waves-light btn-large grey-text text-darken-2 #b3e5fc grey lighten-2' type="submit">Stop Stream</button>
         </div>
       </div>
   </form>
+</div>
 
-  <div id='data-wrapper' class='z-depth-2'>
+<div id='vis-wrap'>
+  <div id='data-wrapper'>
     <div id='visualization' action="{% url 'canary:visualization' %}" method='get'>
+
       <div class='row'>
         <div id='search-keyword'>
-          <h1>Streaming results for <i>'{{positive.keyword}}'</i></h1>
+          <h1 class="header header-regular no-select">Streaming results for <i>'{{positive.keyword}}'</i></h1>
         </div>
-        <div id='loader' class='center-align'>
-          <!-- GREEN -->
-          <div class="progress transparent">
-              <div class="indeterminate green lighten-2"></div>
-          </div>
-          <!-- RED -->
-          <div class="progress transparent">
-              <div class="indeterminate red lighten-3"></div>
-          </div>
+        <div class='loader center-align'>
+            <div class="preloader-wrapper big active">
+                <div class="spinner-layer spinner-yellow-only">
+                    <div class="circle-clipper left">
+                        <div class="circle"></div>
+                        </div><div class="gap-patch">
+                        <div class="circle"></div>
+                    </div>
+                    <div class="circle-clipper right">
+                        <div class="circle"></div>
+                    </div>
+                </div>
+            </div>
         </div>
-
       </div>
 
-      <div class='row'>
-
+      <div class='row viz-elements'>
         <div id='donut' class='col s6 left-align'>
             <script type="text/javascript">
                 SentimentValues.positive = {{ positive.sentiment_value }};
@@ -46,8 +51,8 @@
                     let data = google.visualization.arrayToDataTable([
                         ['Sentiment', 'Count'],
                         ['Positive', SentimentValues.positive],
-                        ['Negative', SentimentValues.negative],
-                        ['Neutral', SentimentValues.neutral]
+                        ['Neutral', SentimentValues.neutral],
+                        ['Negative', SentimentValues.negative]
                     ]);
 
                     let options = {
@@ -74,14 +79,11 @@
         </div>
 
         <!-- POSITIVE SENTIMENT CARD -->
-        <div id='positive' class='col s4 z-depth-2'>
+        <div id='positive' class='col s4 origin-wrapper'>
             <div class='left-align tweet-overview'>
-              <span class='tweet-data'><b><span class='sentiment-count'>{{positive.sentiment_value}}</span></b> positive tweets</span>
+              <span class='tweet-data'><b><span class='sentiment-count'>{{positive.sentiment_value}}</span></b> positive tweet origins</span>
             </div>
-            <div class='right-align tweet-origin'>
-              <span class='tweet-data'>Origins</span>
-            </div>
-          <div id='positive-locations' class='right-align'>
+            <div id='positive-locations' class='right-align'>
             {% for loc in positive.origins %}
                 {% if loc != "Unknown Origin" %}
                     <h6 class='tweet-data location'>{{loc}}</h6>
@@ -91,12 +93,9 @@
         </div>
 
         <!-- NEUTRAL SENTIMENT CARD -->
-        <div id='neutral' class='col s4 z-depth-2'>
+        <div id='neutral' class='col s4 origin-wrapper'>
           <div class='left-align tweet-overview'>
-            <span class='tweet-data'><b><span class='sentiment-count'>{{neutral.sentiment_value}}</span></b> neutral tweets</span>
-          </div>
-          <div class='right-align tweet-origin'>
-            <span class='tweet-data'>Origins</span>
+            <span class='tweet-data'><b><span class='sentiment-count'>{{neutral.sentiment_value}}</span></b> neutral tweet origins</span>
           </div>
           <div id='neutral-locations' class='right-align'>
             {% for loc in neutral.origins %}
@@ -108,12 +107,9 @@
         </div>
 
         <!-- NEGATIVE SENTIMENT CARD -->
-        <div id='negative' class='col s4 z-depth-2'>
+        <div id='negative' class='col s4 origin-wrapper'>
           <div class='left-align tweet-overview'>
-            <span class='tweet-data'><b><span class='sentiment-count'>{{negative.sentiment_value}}</span></b> negative tweets</span>
-          </div>
-          <div class='right-align tweet-origin'>
-            <span class='tweet-data'>Origins</span>
+            <span class='tweet-data'><b><span class='sentiment-count'>{{negative.sentiment_value}}</span></b> negative tweet origins</span>
           </div>
           <div id='negative-locations' class='tweet-data right-align'>
             {% for loc in negative.origins %}
@@ -126,14 +122,6 @@
       </div>
     </div>
   </div>
-
-  <div id='twitter-results' class='row'>
-    <div class='center-align'>
-        <img id='twitter-logo' src="{% static 'img/Twitter_Logo_Blue.png' %}">
-        <span class='powered'>Powered by the Twitter Streaming API</span>
-    </div>
-  </div>
-
 </div>
 <script src="{% static 'js/refresh.js' %}"></script>
 {% endblock %}

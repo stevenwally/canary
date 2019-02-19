@@ -4,19 +4,13 @@
     }
 
     function showResults() {
-        $('#loader').hide();
-        $('#donut').show();
-        $('#positive').show();
-        $('#neutral').show();
-        $('#negative').show();
+        $('.loader').hide();
+        $('.viz-elements').show();
     }
 
     function hideResults() {
-        $('#loader').show();
-        $('#donut').hide();
-        $('#positive').hide();
-        $('#neutral').hide();
-        $('#negative').hide();
+        $('.loader').show();
+        $('.viz-elements').hide();
     }
 
     function streamCount(values) {

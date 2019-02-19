@@ -2,8 +2,9 @@
 
 {% block content %}
 {% load static %}
-<div id='vis-wrap'>
+
 <!-- CONTROLS -->
+<div class="controls">
   <form action="{% url 'canary:start_stream' %}" method="post">
       {% csrf_token %}
       <div class='row'>
@@ -11,22 +12,21 @@
             <input id='landing-search-field' type="text" name="search" placeholder="New Search">
           </div>
       </div>
-
       <div class='row'>
           <div id='start-stream' class='center-align'>
-            <button id="start" class='btn waves-effect waves-light grey-text text-darken-2 grey lighten-2' type="submit">Go</button>
+            <button id="start" class='btn waves-effect waves-light grey-text text-darken-2 grey lighten-3' type="submit">Go</button>
           </div>
       </div>
   </form>
+</div>
 
-  <!-- DATA VIS -->
-
-  <div id='data-wrapper' class='z-depth-2'>
+<div id='vis-wrap'>
+  <div id='data-wrapper'>
 
     <div id='visualization' action="{% url 'canary:visualization' %}" method='get'>
       <div class='row'>
         <div id='search-keyword' class='left-align'>
-          <h1>Results for <i>'{{positive.keyword}}'</i></h1>
+          <h1 class="header header-regular no-select">Results for <i>'{{positive.keyword}}'</i></h1>
         </div>
       </div>
 
@@ -67,7 +67,7 @@
             <div id="piechart" style="width: 400px; height: 400px;"></div>
         </div>
 
-        <div id='positive' class='col s4 z-depth-2'>
+        <div id='positive' class='col s4 origin-wrapper'>
             <div class='left-align tweet-overview'>
               <span class='tweet-data'><b>{{positive.sentiment_value}}</b> positive tweets</span>
             </div>
@@ -83,7 +83,7 @@
           </div>
         </div>
 
-        <div id='neutral' class='col s4 z-depth-2'>
+        <div id='neutral' class='col s4 origin-wrapper'>
           <div class='left-align tweet-overview'>
             <span class='tweet-data'><b>{{neutral.sentiment_value}}</b> neutral tweets</span>
           </div>
@@ -99,7 +99,7 @@
           </div>
         </div>
 
-        <div id='negative' class='col s4 z-depth-2'>
+        <div id='negative' class='col s4 origin-wrapper'>
           <div class='left-align tweet-overview'>
             <span class='tweet-data'><b>{{negative.sentiment_value}}</b> negative tweets</span>
           </div>
@@ -118,13 +118,5 @@
       </div>
     </div>
   </div>
-
-  <div id='twitter-results' class='row'>
-    <div class='center-align'>
-        <img id='twitter-logo' src="{% static 'img/Twitter_Logo_Blue.png' %}">
-        <span class='powered'>Powered by the Twitter Streaming API</span>
-    </div>
-  </div>
-
 </div>
 {% endblock %}

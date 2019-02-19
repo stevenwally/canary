@@ -4,7 +4,7 @@
 <html>
     <head>
         <title>canary</title>
-        <link href="https://afeld.github.io/emoji-css/emoji.css" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Roboto+Mono:100i,300,300i,400,400i,500,700" rel="stylesheet">
         <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
         <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
@@ -15,14 +15,14 @@
             <div id='search-wrap'>
                 <div class='row'>
                     <div class='center-align'>
-                        <h1 id='main-header'>CANARY</h1>
+                        <h1 class="header header-italic no-select">canary</h1>
                     </div>
                 </div>
                 <form action="{% url 'canary:start_stream' %}" method="post">
                     {% csrf_token %}
                     <div class='row'>
                         <div class='center-align'>
-                            <input id='landing-search-field' type="text" name="search" placeholder="enter a topic">
+                            <input id='landing-search-field' type="text" name="search" placeholder="What do you want to search for?">
                         </div>
                     </div>
                     <div class='row'>
