@@ -4,12 +4,12 @@
     }
 
     function showResults() {
-        $('#loader').hide();
+        $('.loader').hide();
         $('.viz-elements').show();
     }
 
     function hideResults() {
-        $('#loader').show();
+        $('.loader').show();
         $('.viz-elements').hide();
     }
 
