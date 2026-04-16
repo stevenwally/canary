@@ -1,3 +1,5 @@
+> **Note:** The `posterity` branch preserves this project in its original capstone-era state. The app is being actively revamped in a new direction, and this branch exists to keep a snapshot of where it started.
+
 # canary
 canary utilizes Twitter's Streaming API to gather tweets based on the user's search. Each tweet that is streamed is processed and given a sentiment ranking using the TextBlob Python library sentiment analysis. Some revisions in this department lay in store. The user is displayed graphical data related to the overall sentiment of tweets based on their search, along with corresponding tweet origin (when available).
 
