@@ -1,23 +1,32 @@
 """LangGraph agent workflow for sentiment analysis pipeline.
 
 The graph defines three stages:
-  1. Aggregate - Collect source data from various platforms
-  2. Verify   - Filter, deduplicate, and validate relevance
-  3. Score    - Run sentiment analysis on verified items
-
-This is the initial skeleton. Each node will be expanded in Phase 2
-with actual agent logic.
+  1. Aggregate - Fan out to multiple source agents concurrently
+  2. Verify   - LLM-powered relevance filtering and deduplication
+  3. Score    - LLM-powered sentiment analysis on verified items
 """
 
 from __future__ import annotations
 
+import asyncio
 import logging
 import operator
 from typing import Annotated, Any, TypedDict
 
 from langgraph.graph import END, START, StateGraph
 
+from app.agents.sentiment import score_items
+from app.agents.sources import BlueskyAgent, NewsAPIAgent, RedditAgent
+from app.agents.verification import verify_items
+
 logger = logging.getLogger(__name__)
+
+# All available source agents
+SOURCE_AGENTS = [
+    RedditAgent(),
+    NewsAPIAgent(),
+    BlueskyAgent(),
+]
 
 
 class PipelineState(TypedDict):
@@ -32,56 +41,68 @@ class PipelineState(TypedDict):
 
 
 async def aggregate(state: PipelineState) -> dict:
-    """Collect data from configured sources for the given topic.
+    """Collect data from all configured sources concurrently.
 
-    In Phase 2, this node will fan out to multiple source-specific
-    agents (Reddit, News API, Bluesky, etc.) and collect their results.
+    Fans out to Reddit, NewsAPI, and Bluesky agents in parallel.
+    Each agent that fails gracefully returns an empty list.
     """
-    logger.info("Aggregating sources for topic: %s", state["topic"])
-    # Placeholder: return empty list, real agents added in Phase 2
-    return {"source_items": [], "status": "aggregated"}
+    topic = state["topic"]
+    logger.info("Aggregating sources for topic: '%s'", topic)
+
+    # Run all source agents concurrently
+    tasks = [agent.safe_fetch(topic, max_items=30) for agent in SOURCE_AGENTS]
+    results = await asyncio.gather(*tasks)
+
+    # Flatten all results into a single list of dicts
+    all_items: list[dict[str, Any]] = []
+    for agent, items in zip(SOURCE_AGENTS, results):
+        logger.info("  %s: %d items", agent.name, len(items))
+        all_items.extend(item.model_dump() for item in items)
+
+    logger.info("Total aggregated: %d items", len(all_items))
+    return {"source_items": all_items, "status": "aggregated"}
 
 
 async def verify(state: PipelineState) -> dict:
-    """Filter, deduplicate, and validate relevance of source items.
+    """Filter, deduplicate, and validate relevance of source items."""
+    topic = state["topic"]
+    items = state["source_items"]
 
-    In Phase 2, this node will use an LLM to check relevance,
-    remove duplicates, and filter low-quality content.
-    """
-    logger.info(
-        "Verifying %d source items for topic: %s",
-        len(state["source_items"]),
-        state["topic"],
-    )
-    # Placeholder: pass all items through as verified
-    return {"verified_items": state["source_items"], "status": "verified"}
+    logger.info("Verifying %d source items for topic: '%s'", len(items), topic)
+
+    if not items:
+        return {"verified_items": [], "status": "verified"}
+
+    verified = await verify_items(topic, items)
+
+    logger.info("Verification passed: %d/%d items", len(verified), len(items))
+    return {"verified_items": verified, "status": "verified"}
 
 
 async def score(state: PipelineState) -> dict:
-    """Run sentiment analysis on verified items.
+    """Run sentiment analysis on verified items."""
+    topic = state["topic"]
+    verified = state["verified_items"]
 
-    In Phase 2, this node will use an LLM to produce structured
-    sentiment scores for each verified item.
-    """
-    logger.info(
-        "Scoring %d verified items for topic: %s",
-        len(state["verified_items"]),
-        state["topic"],
-    )
-    # Placeholder: return empty scores, real scoring added in Phase 2
-    return {"scores": [], "status": "completed"}
+    logger.info("Scoring %d verified items for topic: '%s'", len(verified), topic)
+
+    if not verified:
+        return {"scores": [], "status": "completed"}
+
+    scores = await score_items(topic, verified)
+
+    logger.info("Scored %d items", len(scores))
+    return {"scores": scores, "status": "completed"}
 
 
 def build_graph() -> StateGraph:
     """Build and compile the sentiment analysis pipeline graph."""
     graph = StateGraph(PipelineState)
 
-    # Add nodes
     graph.add_node("aggregate", aggregate)
     graph.add_node("verify", verify)
     graph.add_node("score", score)
 
-    # Define edges: linear pipeline for now
     graph.add_edge(START, "aggregate")
     graph.add_edge("aggregate", "verify")
     graph.add_edge("verify", "score")
@@ -90,5 +111,5 @@ def build_graph() -> StateGraph:
     return graph.compile()
 
 
-# Pre-built graph instance for use throughout the app
+# Pre-built graph instance
 pipeline = build_graph()

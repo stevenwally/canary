@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import uuid
 
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException
 from pydantic import BaseModel
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -12,6 +12,7 @@ from sqlalchemy.orm import selectinload
 
 from app.core.database import get_db
 from app.models.topic import Topic
+from app.services.analysis import run_analysis
 
 router = APIRouter(prefix="/topics", tags=["topics"])
 
@@ -76,22 +77,28 @@ async def get_topic(topic_id: uuid.UUID, db: AsyncSession = Depends(get_db)):
 
 
 @router.post("/{topic_id}/analyze", response_model=AnalyzeResponse)
-async def analyze_topic(topic_id: uuid.UUID, db: AsyncSession = Depends(get_db)):
+async def analyze_topic(
+    topic_id: uuid.UUID,
+    background_tasks: BackgroundTasks,
+    db: AsyncSession = Depends(get_db),
+):
     """Trigger analysis for a topic.
 
-    In Phase 2, this will kick off the LangGraph pipeline.
-    For now it just updates the status.
+    Kicks off the LangGraph pipeline as a background task so the
+    API responds immediately. Poll GET /topics/{id} to check status.
     """
     result = await db.execute(select(Topic).where(Topic.id == topic_id))
     topic = result.scalar_one_or_none()
     if topic is None:
         raise HTTPException(status_code=404, detail="Topic not found")
 
+    if topic.status == "running":
+        raise HTTPException(status_code=409, detail="Analysis already running")
+
     topic.status = "running"
     await db.flush()
 
-    # TODO (Phase 2): Run pipeline in background task
-    # from app.agents.graph import pipeline
-    # await pipeline.ainvoke({"topic": topic.keyword, "topic_id": str(topic.id), ...})
+    # Run the pipeline in the background
+    background_tasks.add_task(run_analysis, topic.id)
 
     return AnalyzeResponse(status="started", topic_id=topic.id)
