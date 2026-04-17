@@ -1,5 +1,7 @@
 """Canary - AI-powered sentiment analysis and tracking."""
 
+import logging
+import sys
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
@@ -7,6 +9,16 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app.api.topics import router as topics_router
 from app.core.config import settings
+
+# Configure logging so all app loggers write to stdout
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s %(levelname)s [%(name)s] %(message)s",
+    stream=sys.stdout,
+)
+# Quiet down noisy libraries
+logging.getLogger("httpx").setLevel(logging.WARNING)
+logging.getLogger("httpcore").setLevel(logging.WARNING)
 
 
 @asynccontextmanager
