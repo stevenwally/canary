@@ -193,7 +193,9 @@ async def analyze_topic(
         raise HTTPException(status_code=409, detail="Analysis already running")
 
     topic.status = "running"
-    await db.flush()
+    # Commit explicitly so the background task sees the updated status
+    # (don't rely on get_db cleanup ordering)
+    await db.commit()
 
     background_tasks.add_task(run_analysis, topic.id)
 
