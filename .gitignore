@@ -1,6 +1,34 @@
-DS_Store
-node_modules
+# OS
+.DS_Store
+
+# Python
+__pycache__/
 *.pyc
-canary_app/canary/config.py
-db.sqlite3
-.idea
+*.pyo
+*.egg-info/
+dist/
+build/
+.venv/
+venv/
+
+# Node
+node_modules/
+.next/
+out/
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Docker
+docker-compose.override.yml
+
+# Database
+*.sqlite3
