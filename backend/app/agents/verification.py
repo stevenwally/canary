@@ -82,8 +82,32 @@ async def verify_items(
 
     try:
         result = json.loads(response.content)
-        # Handle both {"items": [...]} and bare [...] formats
-        evaluations = result if isinstance(result, list) else result.get("items", [])
+        logger.info("Verification LLM response type: %s", type(result).__name__)
+
+        # Handle various response formats from the LLM
+        if isinstance(result, list):
+            evaluations = result
+        elif isinstance(result, dict):
+            # Try common keys the LLM might use
+            for key in ("items", "evaluations", "results", "data"):
+                if key in result and isinstance(result[key], list):
+                    evaluations = result[key]
+                    break
+            else:
+                # If it's a single-item dict with a list value, use that
+                list_values = [v for v in result.values() if isinstance(v, list)]
+                if list_values:
+                    evaluations = list_values[0]
+                else:
+                    logger.error(
+                        "Unexpected verification response structure: %s",
+                        list(result.keys()),
+                    )
+                    evaluations = []
+        else:
+            evaluations = []
+
+        logger.info("Parsed %d evaluations from LLM response", len(evaluations))
     except (json.JSONDecodeError, AttributeError):
         logger.error("Failed to parse verification LLM response: %s", response.content)
         # Fallback: pass everything through
@@ -108,12 +132,12 @@ async def verify_items(
 
         # Skip if explicitly not relevant or below threshold
         if not is_relevant or score < relevance_threshold:
-            logger.debug("Filtered out item %d: %s (score=%.2f)", i, reason, score)
+            logger.info("Filtered item %d: relevant=%s score=%.2f reason='%s'", i, is_relevant, score, reason)
             continue
 
         # Skip duplicates
         if duplicate_of is not None and isinstance(duplicate_of, int):
-            logger.debug("Filtered out item %d: duplicate of item %d", i, duplicate_of)
+            logger.info("Filtered item %d: duplicate of item %d", i, duplicate_of)
             seen_duplicate_targets.add(duplicate_of)
             continue
 

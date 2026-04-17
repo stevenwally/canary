@@ -112,7 +112,33 @@ async def _score_batch(
 
     try:
         result = json.loads(response.content)
-        scores = result if isinstance(result, list) else result.get("items", [])
+        logger.info("Sentiment LLM response type: %s", type(result).__name__)
+
+        if isinstance(result, list):
+            scores = result
+        elif isinstance(result, dict):
+            # Try common keys the LLM might use
+            for key in ("items", "scores", "results", "sentiments", "data", "analyses"):
+                if key in result and isinstance(result[key], list):
+                    scores = result[key]
+                    logger.info("Found scores under key '%s'", key)
+                    break
+            else:
+                # Fallback: use the first list value found
+                list_values = [v for v in result.values() if isinstance(v, list)]
+                if list_values:
+                    scores = list_values[0]
+                    logger.info("Found scores in first list value (%d items)", len(scores))
+                else:
+                    logger.error(
+                        "Unexpected sentiment response structure: %s",
+                        list(result.keys()),
+                    )
+                    scores = []
+        else:
+            scores = []
+
+        logger.info("Parsed %d scores from LLM response", len(scores))
     except (json.JSONDecodeError, AttributeError):
         logger.error("Failed to parse sentiment LLM response: %s", response.content)
         # Fallback: return neutral scores
